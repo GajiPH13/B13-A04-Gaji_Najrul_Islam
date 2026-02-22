@@ -33,6 +33,7 @@ function updateTotal() {
  
 }
  updateTotal();
+
 function toggelColor(id){
     //console.log("click",id);
     // remove the active class from all buttons
@@ -50,6 +51,10 @@ function toggelColor(id){
     selected.classList.remove('bg-white');
     selected.classList.add('bg-[#3B82F6]','text-white');
 
+    if(id == 'btnInterview'){
+        nrOfCart.classList.add('hidden');
+        filterJobs.classList.remove('hidden');
+    }
 }
 
 main.addEventListener("click",function (event) {
@@ -60,12 +65,12 @@ main.addEventListener("click",function (event) {
 
         const cartParent = event.target.parentNode.parentNode
 
-        const companyTitle = document.querySelector('#companyTitle').innerText;
+        const companyTitle = cartParent.querySelector('#companyTitle').innerText;
         //console.log(companyTitle);
-        const jobTitle = document.querySelector('#jobTitle').innerText;
-        const salary = document.querySelector('#salary').innerText;
-        const jobDes = document.querySelector('#jobDes').innerText;
-        const jobStatus = document.querySelector('#jobStatus').placeholder;
+        const jobTitle = cartParent.querySelector('#jobTitle').innerText;
+        const salary = cartParent.querySelector('#salary').innerText;
+        const jobDes = cartParent.querySelector('#jobDes').innerText;
+        const jobStatus = cartParent.querySelector('#jobStatus').placeholder;
         console.log(companyTitle, jobTitle, salary, jobDes, jobStatus);
 
         const jobInfo = {
@@ -78,6 +83,7 @@ main.addEventListener("click",function (event) {
         }
         //console.log(jobInfo);
         const jobExist = interviewList.find(job => job.companyTitle === jobInfo.companyTitle);
+        cartParent.querySelector('#jobStatus').value = "Interviewed";
         if(!jobExist){
             interviewList.push(jobInfo);
         }
