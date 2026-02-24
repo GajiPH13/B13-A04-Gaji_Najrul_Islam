@@ -1,37 +1,30 @@
 let interviewList = [];
 let rejectedList = [];
-let currentValue ='all';
+let currentValue = 'all';
 
 let total =document.getElementById('total');
 let nrOfInterviews = document.getElementById('numOfInterview');
 let nrOfRejected = document.getElementById('numOfRejected');
 
-
-let allJobs = document.getElementById('allJobs');
 let numOfJobs = document.getElementById('numOfJobs');
-const main = document.getElementById('main');
-const filterJobs = document.getElementById('filterJobs');
 
-//const btnInterviewSelect = document.getElementById('btnInterviewSelect');
-//const btnRejectedSelect = document.getElementById('btnRejectedSelect');
-const jobStatus = document.getElementById('jobStatus');
-//console.log(main);
-//console.log(nrOfCart);
-//interviewList.push("interview1");
+const allJobs = document.getElementById('allJobs');
+const mainSection = document.getElementById('mainSection');
+const filterJobs = document.getElementById('filterJobs');
 
 const btnAll = document.getElementById("btnAll");
 const btnInterview = document.getElementById("btnInterview");
 const btnRejected = document.getElementById("btnRejected");
 
 // funcrion to update the total number of applications, interviews, and rejections
+
 function updateTotal() {
-    total.innerText = allJobs.children.length ;
-    numOfJobs.innerHTML = allJobs.children.length ;
-    nrOfInterviews.innerHTML = interviewList.length;
-    nrOfRejected.innerHTML = rejectedList.length;
-    //console.log(totalApplications);
+    total.innerText = allJobs.children.length;
+    numOfJobs.innerText = allJobs.children.length;
     
-    //numOfJobs.innerHTML = totalApplications;
+    nrOfInterviews.innerText = interviewList.length;
+    nrOfRejected.innerText = rejectedList.length;
+   
  
 }
  updateTotal();
@@ -60,20 +53,23 @@ function toggelColor(id){
         allJobs.classList.add('hidden');
         filterJobs.classList.remove('hidden');
         renderInterviewed();
+        numOfJobs.innerText = `${interviewList.length} of ${allJobs.children.length} `;
     }else if(id == 'btnAll'){
         allJobs.classList.remove('hidden');
         filterJobs.classList.add('hidden');
+        numOfJobs.innerText = allJobs.children.length;
 
     }else if(id == 'btnRejected'){
         allJobs.classList.add('hidden');
         filterJobs.classList.remove('hidden');
         renderRejected();
+        numOfJobs.innerText = `${rejectedList.length} of ${allJobs.children.length}`;
     }
 }
 
 //delegation event for interview and rejected buttons
 
-main.addEventListener('click',function (event) {
+mainSection.addEventListener('click',function (event) {
 
     
     if(event.target.classList.contains('btnInterviewSelect')){
@@ -81,48 +77,50 @@ main.addEventListener('click',function (event) {
         const jobsParent = event.target.parentNode.parentNode;
         //console.log(jobsParent);
 
-        const companyName = jobsParent.querySelector('#companyName').innerText;
-        const position = jobsParent.querySelector('#position').innerText;
-        const salary = jobsParent.querySelector('#salary').innerText;
-        const jobStatus = jobsParent.querySelector('#jobStatus').innerText;
-        const jobDes = jobsParent.querySelector('#jobDes').innerText;
+        const companyName = jobsParent.querySelector('.companyName').innerText;
+        const position = jobsParent.querySelector('.position').innerText;
+        const salary = jobsParent.querySelector('.salary').innerText;
+        const jobStatus = jobsParent.querySelector('.jobStatus').innerText;
+        const jobDes = jobsParent.querySelector('.jobDes').innerText;
 
         //console.log(companyName, position, salary, jobStatus, jobDes);
 
-        jobsParent.querySelector('#jobStatus').innerText = 'Interviewed';
+        jobsParent.querySelector('.jobStatus').innerText = 'Interviewed';
 
-        const jobInfo = {
-            companyName,
-            position,
-            salary,
-            jobStatus: 'Interviewed',
-            jobDes
-            
-        }
+            const jobInfo = {
+                companyName,
+                position,
+                salary,
+                jobStatus: 'Interviewed',
+                jobDes
+                
+            }
         
-        const jobExist = interviewList.find(job => job.companyName == jobInfo.companyName);
+            const jobExist = interviewList.find(job => job.companyName == jobInfo.companyName);
         
-        if(!jobExist){
-            interviewList.push(jobInfo);
-        }
+            if(!jobExist){
+                interviewList.push(jobInfo);
+            }
 
-        rejectedList = rejectedList.filter(job => job.companyName != jobInfo.companyName);
+            rejectedList = rejectedList.filter(job => job.companyName !== jobInfo.companyName);
 
-        if(currentValue == 'btnRejected'){
-            renderRejected();
-        }
-        updateTotal();
+            if(currentValue == 'btnRejected'){
+                renderRejected();
+            }
+
+            updateTotal();
+
     }else if(event.target.classList.contains('btnRejectedSelect')){
 
         const jobsParent = event.target.parentNode.parentNode;
         //console.log(jobsParent);
-        const companyName = jobsParent.querySelector('#companyName').innerText;
-        const position = jobsParent.querySelector('#position').innerText;
-        const salary = jobsParent.querySelector('#salary').innerText;
-        const jobStatus = jobsParent.querySelector('#jobStatus').innerText;
-        const jobDes = jobsParent.querySelector('#jobDes').innerText;
+        const companyName = jobsParent.querySelector('.companyName').innerText;
+        const position = jobsParent.querySelector('.position').innerText;
+        const salary = jobsParent.querySelector('.salary').innerText;
+        const jobStatus = jobsParent.querySelector('.jobStatus').innerText;
+        const jobDes = jobsParent.querySelector('.jobDes').innerText;
 
-        jobsParent.querySelector('#jobStatus').innerText = 'Rejected';
+        jobsParent.querySelector('.jobStatus').innerText = 'Rejected';
 
         const jobInfo = {
             companyName,
@@ -130,16 +128,18 @@ main.addEventListener('click',function (event) {
             salary,
             jobStatus: 'Rejected',
             jobDes
-    }
-    const jobExist = rejectedList.find(job => job.companyName == jobInfo.companyName);
-    if(!jobExist){
-        rejectedList.push(jobInfo);
-    }
-    interviewList = interviewList.filter(job => job.companyName != jobInfo.companyName);
-    if(currentValue == 'btnRejected'){
-        renderRejected();
-    }
-    updateTotal();
+        }
+
+        const jobExist = rejectedList.find(job => job.companyName == jobInfo.companyName);
+        
+        if(!jobExist){
+            rejectedList.push(jobInfo);
+        }
+        interviewList = interviewList.filter(job => job.companyName != jobInfo.companyName);
+        if(currentValue == 'btnInterview'){
+            renderInterviewed();
+        }
+    updateTotal()
     }
 })
 
@@ -151,12 +151,12 @@ function renderInterviewed(){
         console.log(interview);
 
         let div = document.createElement('div');
-        div.className = 'jobs shadow-md rounded-lg bg-white min-h-[300px] px-6 py-6';
+        div.className = 'jobs flex-col gap-4 shadow-md rounded-lg bg-white min-h-[300px] mb-5 px-6 py-6';
         div.innerHTML = `
             
-            <div class="flex justify-between" >
+            <div class="flex justify-between space-y-6" >
                     <div>
-                        <h3 id="companyTitle" class="text-[18px] font-bold text-black mb-1">Mobile First Corp</h3>
+                        <h3 id="companyTitle" class="text-[18px] font-bold text-black mb-1">${interview.companyName}</h3>
                         <p id="jobTitle" class="text-[18px] text-gray-500">React Native Developer</p>
                     </div>
                     <div >
@@ -173,7 +173,7 @@ function renderInterviewed(){
                     <button id="btnRejectedSelect" class="px-3 py-2 border-2 border-red-300 text-red-500 rounded-[5px]">REJECTED</button>
                 </div>
             </div>
-        `;
+        `
         filterJobs.appendChild(div);
     }
 }
@@ -182,7 +182,7 @@ function renderRejected(){
     filterJobs.innerHTML = '';
 
     for(let rejected of rejectedList){
-        console.log(rejected);
+        //console.log(rejected.length);
 
         let div = document.createElement('div');
         div.className = ' jobs shadow-md rounded-lg bg-white min-h-[300px] px-6 py-6';
@@ -190,7 +190,7 @@ function renderRejected(){
             
             <div class="flex justify-between" >
                     <div>
-                        <h3 id="companyTitle" class="text-[18px] font-bold text-black mb-1">Mobile First Corp</h3>
+                        <h3 id="companyTitle" class="text-[18px] font-bold text-black mb-1">${rejected.companyName}</h3>
                         <p id="jobTitle" class="text-[18px] text-gray-500">React Native Developer</p>
                     </div>
                     <div >
@@ -207,7 +207,7 @@ function renderRejected(){
                     <button id="btnRejectedSelect" class="px-3 py-2 border-2 border-red-300 text-red-500 rounded-[5px]">REJECTED</button>
                 </div>
             </div>
-        `;
+        `
         filterJobs.appendChild(div);
     }
 }
