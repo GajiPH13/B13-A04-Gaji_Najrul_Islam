@@ -16,6 +16,8 @@ const btnAll = document.getElementById("btnAll");
 const btnInterview = document.getElementById("btnInterview");
 const btnRejected = document.getElementById("btnRejected");
 
+const deletJob = document.getElementById('btnRemove');
+
 // funcrion to update the total number of applications, interviews, and rejections
 
 function updateTotal() {
@@ -40,7 +42,7 @@ function toggelColor(id){
     btnAll.classList.add('bg-white','text-black');
     btnInterview.classList.add('bg-white','text-black');
     btnRejected.classList.add('bg-white','text-black');
-
+    
     const selected = document.getElementById(id);
 
     currentValue = id;
@@ -53,17 +55,31 @@ function toggelColor(id){
         allJobs.classList.add('hidden');
         filterJobs.classList.remove('hidden');
         renderInterviewed();
+        // Count the number of jobs in the interview list and update the numOfJobs element
         numOfJobs.innerText = `${interviewList.length} of ${allJobs.children.length} `;
+        // display the no jobs message if there are no jobs in the interview list
+        if(interviewList.length == 0){
+            noJobs();
+        }/* else{
+            noMatch.classList.add('hidden');
+        } */
+        
     }else if(id == 'btnAll'){
         allJobs.classList.remove('hidden');
         filterJobs.classList.add('hidden');
         numOfJobs.innerText = allJobs.children.length;
-
+        
+        //noMatch.classList.add('hidden');
     }else if(id == 'btnRejected'){
         allJobs.classList.add('hidden');
         filterJobs.classList.remove('hidden');
         renderRejected();
         numOfJobs.innerText = `${rejectedList.length} of ${allJobs.children.length}`;
+        if(rejectedList.length == 0){
+            noJobs();
+        }/* else{
+            noMatch.classList.add('hidden');
+        } */
     }
 }
 
@@ -139,8 +155,34 @@ mainSection.addEventListener('click',function (event) {
         if(currentValue == 'btnInterview'){
             renderInterviewed();
         }
+        
     updateTotal()
+
     }
+    //delete job from the list
+    if(event.target.classList.contains('btnRemove')){
+        
+        event.target.parentNode.parentNode.parentNode.remove();
+        //console.log(event.target.parentNode.parentNode.parentNode);
+        filterJobs.classList.add('hidden');
+        //interviewList.add('hidden');
+
+        updateTotal();
+    }
+    
+    /* console.log(interviewList);
+     if(event.target.classList.contains('btnRemove') &&
+      parentNode.jobStatus.innerText == 'Interviewed' ){
+        event.target.parentNode.parentNode.parentNode.remove();
+        nrOfInterviews.innerText = interviewList.length -1;
+        updateTotal();
+      }  */
+            
+
+    
+    
+    
+    
 })
 
 //creat element for rejected button
@@ -169,8 +211,8 @@ function renderInterviewed(){
                     <p id="jobDes" class="mt-2 mb-5">Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.</p>
                 </div>
                 <div class="flex gap-5">
-                    <button id="btnInterviewSelect" class="px-3 py-2 border-2 border-green-300 text-green-500 rounded-[5px]">INTERVIEW</button>
-                    <button id="btnRejectedSelect" class="px-3 py-2 border-2 border-red-300 text-red-500 rounded-[5px]">REJECTED</button>
+                    <button id="btnInterviewSelect" class="px-3 py-2 border-2 border-green-300 text-green-500 rounded-[5px]">Interviewed</button>
+                    <button id="btnRejectedSelect" class="px-3 py-2 border-2 border-red-300 text-red-500 rounded-[5px]">Rejected</button>
                 </div>
             </div>
         `
@@ -211,3 +253,22 @@ function renderRejected(){
         filterJobs.appendChild(div);
     }
 }
+
+function noJobs(){
+    filterJobs.innerHTML = '';
+    let div = document.createElement('div');
+    div.className = "flex flex-col items-center  justify-center shadow-md rounded-lg bg-white min-h-[300px] px-6 py-6 "
+    div.innerHTML = `
+        <div>
+            <img src="./ICONS/noJob.png" alt="" srcset="">
+        </div>
+        <div>
+            <p class="text-center">No job found</p>
+            <p class="text-center">Check back soon for new job opportunities</p>
+        </div>
+    `
+    filterJobs.appendChild(div);
+   // noMatch.classList.remove('hidden');
+    //noMatch.classList.add('hidden');
+}
+
