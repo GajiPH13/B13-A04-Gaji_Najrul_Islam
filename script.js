@@ -7,7 +7,7 @@ let currentValue = 'all';
 
 // Catch the elements with there id and class name
 
-let total =document.getElementById('total');
+let total = document.getElementById('total');
 let nrOfInterviews = document.getElementById('numOfInterview');
 let nrOfRejected = document.getElementById('numOfRejected');
 
@@ -88,6 +88,7 @@ function toggelColor(id){
         allJobs.classList.remove('hidden');
         filterJobs.classList.add('hidden');
         numOfJobs.innerText = allJobs.children.length;
+        
         
     // when the Rejected button is clicked, hide all jobs and show only the rejected jobs,
     // and update the number of jobs in the rejected list and the total number of jobs, 
